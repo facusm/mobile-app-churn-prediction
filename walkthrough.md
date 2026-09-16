@@ -76,8 +76,7 @@ Script auxiliar exploratorio generado para evidenciar el borde temporal truncado
 
 | Fecha (UTC) | Filas | Churn rate | Problema |
 |---|---|---|---|
-| 2018-06-29 | 491 | 100.0% | Ventana completamente truncada |
-| 2018-06-30 | 1,817 | ~88.5% | Ventana parcialmente truncada |
+| 2018-06-30 | 2,308 | 100.0% | Ventana temporal truncada al final del dataset |
 | **Total eliminado** | **2,308** | — | Filtrados en el pipeline |
 
 **Corrección aplicada (v2):** el flujo se reordenó para:
