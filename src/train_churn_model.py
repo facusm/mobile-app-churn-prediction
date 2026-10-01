@@ -1,5 +1,5 @@
 """
-Script de Entrenamiento del Modelo de Churn D1 (Etermax)
+Script de Entrenamiento del Modelo de Churn D1
 =========================================================
 Entrenamiento de un modelo LightGBM optimizado con Optuna.
 Incluye validación cruzada, métricas de evaluación (PR-AUC) y explicabilidad con SHAP.
@@ -41,7 +41,7 @@ def main():
     X = df.drop(columns=["target_churn_indicator"])
     y = df["target_churn_indicator"]
     
-    print("2. Split Train/Test (80/20) estratificado...")
+    print("2. Split Train/Validation (80/20) estratificado...")
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.20, stratify=y, random_state=RANDOM_STATE
     )
@@ -110,7 +110,7 @@ def main():
     final_model = lgb.LGBMClassifier(**final_params)
     final_model.fit(X_train, y_train)
     
-    print("\n6. Evaluación sobre el set de Prueba (Test)...")
+    print("\n6. Evaluación sobre el set de Validación...")
     y_test_pred_proba = final_model.predict_proba(X_test)[:, 1]
     y_test_pred = final_model.predict(X_test)
     

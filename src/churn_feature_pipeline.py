@@ -4,7 +4,7 @@ Pipeline de preparación de datos para modelo predictivo de Churn (Día 1)
 Industria: Videojuegos móviles  |  Motor: Polars (lazy evaluation)
 Target: LightGBM-ready DataFrame con features derivados exclusivamente del dataset interno.
 
-Autor : Pipeline generado para Etermax DS
+Autor : Pipeline de Procesamiento de Datos
 Fecha : 2026-09-10
 """
 

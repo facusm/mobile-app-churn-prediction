@@ -1,4 +1,4 @@
-# Walkthrough — Pipeline de Churn Día +1 (D1) para Etermax
+# Walkthrough — Pipeline de Churn Día +1 (D1)
 
 ## 1. Contexto del Proyecto
 
@@ -241,7 +241,7 @@ El script [`src/train_churn_model.py`](./src/train_churn_model.py) orquesta el e
 ### 9.1 Preparación de Datos y Split
 - **Dataset:** 17,692 filas generadas por el pipeline.
 - **Variables excluidas:** `user_id`, `install_date`, `install_time`.
-- **Split Estratificado:** 80% Train, 20% Test (fijando `random_state=42` para reproducibilidad).
+- **Split Estratificado:** 80% Train, 20% Validación (fijando `random_state=42` para reproducibilidad).
 
 ### 9.2 Optimización de Hiperparámetros (Optuna)
 Se ejecutaron **50 trials** utilizando un `StratifiedKFold` (n=5) sobre el set de Entrenamiento, buscando maximizar el **PR-AUC (Average Precision)**.
@@ -252,8 +252,9 @@ Los mejores hiperparámetros hallados fueron:
 - `min_child_samples`: 86
 - `colsample_bytree`: 0.656
 
-### 9.3 Evaluación en Test
-El modelo final (entrenado sobre el 100% del set de Train) logró los siguientes resultados sobre el set de Test puro:
+### 9.3 Evaluación
+
+El modelo final (entrenado sobre el 100% del set de Train) logró los siguientes resultados sobre el set de validación puro:
 - **PR-AUC:** 0.7503
 - **ROC-AUC:** 0.7838
 

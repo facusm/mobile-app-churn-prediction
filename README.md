@@ -1,11 +1,22 @@
-# Churn Día +1 (D1) — Pipeline & EDA · Etermax
+# Pipeline Automatizado de Predicción de Churn de Usuarios en Apps Móviles
 
-Modelo predictivo de **churn Día +1 (D1)** para videojuegos móviles.  
+Modelo predictivo de **churn Día +1 (D1)** para videojuegos móviles y aplicaciones.  
 Pipeline de feature engineering con [Polars](https://pola.rs/) (lazy evaluation) orientado a entrenamiento con [LightGBM](https://lightgbm.readthedocs.io/).
 
 ---
 
-## Requisitos
+## 🚀 Arquitectura y Tecnologías Destacadas
+
+Este proyecto funciona como una solución integral MLOps para la predicción de fuga de usuarios, empleando:
+- **Polars**: Procesamiento de datos ultrarrápido mediante evaluación perezosa (lazy evaluation), superando ampliamente los tiempos de pandas tradicionales.
+- **LightGBM**: Modelo de boosting de gradiente altamente eficiente, ideal para datasets tabulares de gran escala y distribuciones desbalanceadas.
+- **Optuna**: Optimización bayesiana automática de hiperparámetros, maximizando el PR-AUC mediante una búsqueda inteligente y eficiente.
+- **SHAP (SHapley Additive exPlanations)**: Explicabilidad avanzada del modelo, permitiendo interpretar el impacto de cada variable en las predicciones (Feature Importance).
+- **Docker**: Contenerización completa del entorno para asegurar la reproducibilidad exacta en cualquier infraestructura.
+
+---
+
+## 📦 Requisitos
 
 - Python ≥ 3.10
 - Dependencias:
@@ -16,10 +27,10 @@ pip install polars lightgbm matplotlib numpy scikit-learn optuna shap
 
 ---
 
-## Estructura del proyecto
+## 📂 Estructura del proyecto
 
-```
-etermax/
+```text
+proyecto/
 ├── data/
 │   └── dataset_raw.csv              # Dataset crudo (20,000 registros)
 ├── src/
@@ -36,59 +47,59 @@ etermax/
 
 ---
 
-## Ejecución
+## ⚙️ Ejecución
 
-### Opción 1: Docker (Recomendado para reproducibilidad)
+### Opción 1: Docker (Recomendado)
 
-El proyecto está empaquetado en un contenedor Docker que instala todas las dependencias y ejecuta el orquestador (`main.py`).
+El proyecto está completamente empaquetado en un contenedor Docker, garantizando una ejecución estable en cualquier ambiente corporativo.
 
 ```bash
 # 1. Construir la imagen
-docker build -t etermax-churn .
+docker build -t churn-pipeline .
 
 # 2. Ejecutar el contenedor (los resultados se mostrarán por consola)
-docker run --rm etermax-churn
+docker run --rm churn-pipeline
 ```
 
-### Opción 2: Localmente
+### Opción 2: Entorno Local
 
-Si prefieres ejecutarlo localmente, puedes correr el orquestador `main.py` que invocará secuencialmente el pipeline, el EDA y el entrenamiento del modelo.
+También es posible ejecutar localmente el orquestador principal que automatiza de forma secuencial: feature engineering, EDA y entrenamiento.
 
 ```bash
 # Ejecutar todo el flujo
 python -X utf8 main.py
 ```
 
-Los gráficos se guardarán automáticamente en la carpeta `plots/`.
+Los gráficos y explicaciones visuales se generarán automáticamente en el directorio `plots/`.
 
-**Métricas Finales (Test Set):**
+**Métricas Finales (Validation Set):**
 - **PR-AUC:** 0.7503
 - **ROC-AUC:** 0.7838
 
 ---
 
-## Datos clave
+## 📊 Insights y Datos Clave
 
 | Métrica | Valor |
 |---|---|
 | Filas originales | 20,000 |
-| Filas eliminadas (borde temporal) | 2,308 |
-| Filas finales | 17,692 |
-| Columnas finales | 30 |
+| Filas eliminadas (filtro de borde temporal) | 2,308 |
+| Filas procesadas | 17,692 |
+| Features generados | 30 |
 | Tasa de churn global | ~48% |
 
-### Features con mayor poder predictivo (EDA)
+### Análisis Predictivo Principal
 
-| Feature | Señal |
+A partir de las herramientas de explicabilidad multivariada (SHAP), se descubrieron los verdaderos drivers de retención:
+
+| Driver | Impacto Observado |
 |---|---|
-| `total_events` | Relación monotónica inversa: 72.8% churn (0-10 eventos) → 10.1% (+150 eventos) |
-| `has_done_event_3` | Δ=36.9pp (20.7% vs 57.6%) con volumetría sólida en ambos grupos |
-| `has_done_event_1/2` | Δ≈25pp (46% vs 71%) |
-
-> **⚠️ Nota metodológica:** Este análisis bivariado sugirió inicialmente que el `has_done_event_3` era el principal hito de retención. Sin embargo, como se demuestra más adelante en el análisis de explicabilidad (SHAP), al evaluar las interacciones multivariadas, el verdadero motor de retención a largo plazo es el **Evento 4** (junto con el Evento 1). El Evento 3 actúa simplemente como un "despertador" de interés inicial.
+| **Interacción Temprana** | Relación monotónica inversa: 72.8% de churn en usuarios pasivos (0-10 eventos) → 10.1% de retención en perfiles altamente activos (+150 eventos). |
+| **Descubrimiento de Hitos** | El EDA univariado expone variables de descubrimiento temprano con grandes caídas en la tasa de churn (ej. Δ=36.9pp). |
+| **Efectos Multivariados** | SHAP revela que eventos específicos actúan como anclas reales de retención (ej. Evento 4), mientras que otros operan como meros activadores del flujo de usuario (Evento 3). |
 
 ---
 
-## Documentación detallada
+## 📖 Documentación
 
-Consultá [`walkthrough.md`](walkthrough.md) para el paso a paso completo: fases del pipeline, registros eliminados, variables creadas, correcciones aplicadas y hallazgos del EDA con gráficos embebidos.
+Se incluye un análisis técnico detallado en [`walkthrough.md`](walkthrough.md), donde se expone paso a paso la racionalidad detrás de cada fase del pipeline, decisiones de preprocesamiento, estrategias de modelado e interpretación de gráficos exploratorios.

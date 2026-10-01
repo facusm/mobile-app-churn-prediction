@@ -13,7 +13,7 @@ from src import train_churn_model
 
 def main():
     print("="*60)
-    print("🚀 INICIANDO PIPELINE DE CHURN D1 (ETERMAX)")
+    print("🚀 INICIANDO PIPELINE DE CHURN D1")
     print("="*60)
     
     print("\n▶ FASE 1: Feature Engineering (Polars)")
